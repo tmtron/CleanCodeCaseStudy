@@ -3,6 +3,7 @@ package cleancoderscom.view;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ViewTemplate {
@@ -10,7 +11,10 @@ public class ViewTemplate {
 
   public static ViewTemplate create(String templateResource) throws IOException {
     URL url = ClassLoader.getSystemResource(templateResource);
-    byte[] bytes = Files.readAllBytes(Paths.get(url.getPath()));
+    // make it work on Windows: https://stackoverflow.com/a/32722617/6287240
+    String cleanedPath = url.getPath().replaceFirst("^/(.:/)", "$1");
+    Path path = Paths.get(cleanedPath);
+    byte[] bytes = Files.readAllBytes(path);
     return new ViewTemplate(new String(bytes));
   }
 

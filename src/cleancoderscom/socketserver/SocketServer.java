@@ -26,7 +26,7 @@ public class SocketServer {
       public void run() {
         try {
           while(running) {
-            Socket serviceSocket = serverSocket.accept();
+            final Socket serviceSocket = serverSocket.accept();
             executor.execute(new Runnable() {
               @Override
               public void run() {
